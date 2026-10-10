@@ -52,9 +52,10 @@ def main():
                 Specializing in end-to-end data analytics, machine learning pipelines, and interactive executive dashboards.
             </p>
             <div style="font-size: 0.85rem; color: #94A3B8;">
-                <div>🐙 <b>GitHub:</b> <a href="https://github.com/Sheshendra" target="_blank" style="color: #60A5FA;">github.com/Sheshendra</a></div>
-                <div style="margin-top: 6px;">💼 <b>LinkedIn:</b> <a href="https://linkedin.com/in/sheshendra" target="_blank" style="color: #60A5FA;">linkedin.com/in/sheshendra</a></div>
-                <div style="margin-top: 6px;">✉️ <b>Email:</b> <span style="color: #94A3B8;">sheshendra@example.com</span></div>
+                <div>🐙 <b>GitHub:</b> <a href="https://github.com/sheshendhra" target="_blank" style="color: #60A5FA;">github.com/sheshendhra</a></div>
+                <div style="margin-top: 6px;">💼 <b>Project Repo:</b> <a href="https://github.com/sheshendhra/olist-ecommerce-analytics" target="_blank" style="color: #60A5FA;">sheshendhra/olist-ecommerce-analytics</a></div>
+                <div style="margin-top: 6px;">✉️ <b>Email:</b> <a href="mailto:sheshendra09@gmail.com" style="color: #60A5FA;">sheshendra09@gmail.com</a></div>
+                <div style="margin-top: 6px;">🚀 <b>Live App:</b> <a href="https://sheshendra-olist-analytics.streamlit.app/" target="_blank" style="color: #60A5FA;">sheshendra-olist-analytics.streamlit.app</a></div>
             </div>
         </div>
         """, unsafe_allow_html=True)

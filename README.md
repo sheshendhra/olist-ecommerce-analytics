@@ -4,22 +4,26 @@
 > Analyzing 98,666 real Brazilian marketplace orders, revenue performance, delivery punctuality, RFM customer segmentation, and churn risk.
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sheshendra-olist-analytics.streamlit.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/sheshendhra/olist-ecommerce-analytics)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.42%2B-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Plotly](https://img.shields.io/badge/Plotly-Interactive%20Charts-3F4F75?logo=plotly&logoColor=white)](https://plotly.com/)
 [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML%20Churn%20Model-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
 [![SQLite](https://img.shields.io/badge/SQL-Analytical%20Engine-003B57?logo=sqlite&logoColor=white)](https://sqlite.org/)
+[![Tests](https://img.shields.io/badge/Tests-16%20Passed-brightgreen)](https://github.com/sheshendhra/olist-ecommerce-analytics)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-> 🚀 **Live Demo:** [https://sheshendra-olist-analytics.streamlit.app/](https://sheshendra-olist-analytics.streamlit.app/)
+> 🚀 **Live Application:** [https://sheshendra-olist-analytics.streamlit.app/](https://sheshendra-olist-analytics.streamlit.app/)  
+> 📂 **GitHub Repository:** [https://github.com/sheshendhra/olist-ecommerce-analytics](https://github.com/sheshendhra/olist-ecommerce-analytics)
 
 ---
 
 ## 📌 Project Overview
 
-**Olist** is the largest department store marketplace in Brazilian e-commerce, connecting small merchants from across Brazil to major sales channels. This project delivers an executive intelligence suite and machine learning decision tool based on the official Olist Brazilian E-Commerce dataset.
+**Olist** is the largest department store marketplace in Brazilian e-commerce, connecting small merchants from across Brazil to major sales channels. This project delivers an executive intelligence suite, interactive SQL exploratory console, and machine learning decision tool based on the official Olist Brazilian E-Commerce dataset.
 
-- **Lead Analyst & Developer:** **Sheshendra**
+- **Author & Maintainer:** **Sheshendra** ([GitHub: @sheshendhra](https://github.com/sheshendhra) | [Email](mailto:sheshendra09@gmail.com))
+- **Live Deployment:** [sheshendra-olist-analytics.streamlit.app](https://sheshendra-olist-analytics.streamlit.app/)
 - **Original Source Attribution:** Derived and enhanced from the open-source analytics project by [Ashutosh-AIBOT](https://github.com/Ashutosh-AIBOT/olist-ecommerce-analytics) under the MIT License.
 - **Dataset:** [Olist Brazilian E-Commerce Dataset on Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
@@ -51,6 +55,24 @@
 
 ---
 
+## 🖥️ Application Pages & Features
+
+The platform is organized into 8 interactive multi-page dashboards:
+
+| Page | Features & Capabilities |
+|---|---|
+| **Executive Overview (`app.py`)** | Hero KPI metric cards, gross sales vs shipping costs, monthly revenue trend chart, quick navigation |
+| **1. Sales Analytics** | Monthly revenue trends, AOV progression, MoM growth rates, revenue distribution by Brazilian state |
+| **2. Product & Seller Analytics** | Top category ranking, cumulative Pareto 80/20 curve, top seller leaderboards, volume vs revenue matrices |
+| **3. Customer Analytics** | Single-purchase vs repeat buyer analysis, RFM segmentation (Recency, Frequency, Monetary), cohort retention |
+| **4. Delivery Analytics** | State transit time comparison, promised vs actual delivery variance, rating degradation vs delay correlation |
+| **5. Machine Learning** | Zero-leakage Random Forest churn model benchmark, confusion matrix, feature importance, live what-if churn simulator |
+| **6. SQL Insights Console** | In-memory SQLite analytics engine, 10 business SQL questions with CTEs and Window Functions (`LAG`, `DENSE_RANK`), live custom SQL query runner |
+| **7. BI Dashboards & Excel** | Preserved Microsoft Power BI dashboard showcase and downloadable multi-tab Excel model (`Olist_Ecommerce_Analytics.xlsx`) |
+| **8. About Project** | Full system documentation, architecture overview, dataset lineage, and maintainer profile |
+
+---
+
 ## 🏗️ System Architecture
 
 ```
@@ -64,7 +86,7 @@
                                │     Python & Pandas ETL     │
                                │  - Clean nulls & datetimes  │
                                │  - Join orders/items/custs  │
-                               │  - Parquet Caching (20MB)   │
+                               │  - Parquet Caching (20.6MB) │
                                └──────────────┬──────────────┘
                                               │
                    ┌──────────────────────────┼──────────────────────────┐
@@ -94,7 +116,7 @@
 ## 🗂️ Project Structure
 
 ```
-olist-ecommerce-analytics-main/
+olist-ecommerce-analytics/
 ├── app.py                          # Primary Streamlit entry point (Executive Overview)
 ├── pages/
 │   ├── 1_Sales_Analytics.py        # Monthly trends, AOV, MoM growth, state distribution
@@ -112,7 +134,7 @@ olist-ecommerce-analytics-main/
 ├── services/
 │   ├── data_loader.py              # ETL pipeline & parquet cache loader
 │   ├── analytics.py                # Sales, category, delivery, and RFM calculations
-│   ├── database.py                 # SQLite / PostgreSQL engine & curated SQL questions
+│   ├── database.py                 # SQLite engine & curated SQL questions
 │   └── ml_service.py               # Leakage-free churn model training & inference
 ├── utils/
 │   ├── config.py                   # Branding, color themes, and formatting helpers
@@ -122,7 +144,7 @@ olist-ecommerce-analytics-main/
 │   ├── build_cache.py              # Generates the fast analytical parquet cache
 │   └── train_model.py              # Trains and serializes the Random Forest model
 ├── sql/
-│   ├── postgres_data_load.sql      # Clean PostgreSQL DDL and \copy import script
+│   ├── postgres_data_load.sql      # PostgreSQL DDL and \copy import script
 │   └── Sql_Questions.ipynb         # Jupyter notebook containing analytical queries
 ├── tests/
 │   ├── test_data_loader.py         # ETL and dataset tests
@@ -133,15 +155,17 @@ olist-ecommerce-analytics-main/
 ├── models/
 │   ├── churn_model.joblib          # Trained Random Forest classifier
 │   └── scaler.joblib               # StandardScaler preprocessing artifact
+├── data/
+│   └── olist_master.parquet        # High-speed pre-joined analytical cache (20.6MB)
 ├── .streamlit/
-│   └── config.toml                 # Dark portfolio UI theme configuration
+│   └── config.toml                 # Streamlit UI configuration
 ├── Olist_Ecommerce_Analytics.xlsx  # Preserved Excel workbook (KPIs, RFM, Monthly)
 ├── Powerbi_dashboard/              # Preserved Power BI screenshots & views
 ├── MsExcel_Dashboard/              # Preserved Excel pivot table screenshots
 ├── requirements.txt                # Production Python dependencies
 ├── .env.example                    # Environment variable template
 ├── .gitignore                      # Git exclusion rules
-└── README.md                       # Complete documentation
+└── README.md                       # Comprehensive portfolio documentation
 ```
 
 ---
@@ -175,9 +199,9 @@ olist-ecommerce-analytics-main/
 - Python 3.10 or higher
 - Git
 
-### 1. Clone or Open the Repository
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/Sheshendra/olist-ecommerce-analytics.git
+git clone https://github.com/sheshendhra/olist-ecommerce-analytics.git
 cd olist-ecommerce-analytics
 ```
 
@@ -197,7 +221,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Download Dataset & Build Cache (If Not Pre-Packaged)
+### 4. Build Dataset Cache & Train Model (Optional)
+The pre-built Parquet cache (`data/olist_master.parquet`) and trained model artifacts (`models/`) are already included in the repository. If you ever need to rebuild from raw CSVs:
 ```bash
 # Downloads the 8 core Olist tables from public repository (~1 minute)
 python scripts/download_data.py
@@ -217,56 +242,63 @@ Open your browser at `http://localhost:8501`.
 
 ---
 
-## 🧪 Running Automated Tests
+## 🧪 Automated Testing
 
-Run the complete 16-test suite:
+Run the complete 16-test suite using pytest:
 ```bash
 python -m pytest -v
 ```
 
-All 16 unit and integration tests verify:
-- ETL data ingestion & column schemas
-- Executive KPI calculations & Pareto distributions
-- Zero-leakage ML feature construction & model inference
-- Live in-memory SQL query execution across CTEs and Window Functions
-- Input and parameter validation
+**Verified Test Results (16/16 Passed):**
+```
+tests/test_analytics.py::test_compute_executive_kpis PASSED              [  6%]
+tests/test_analytics.py::test_get_monthly_sales_trend PASSED             [ 12%]
+tests/test_analytics.py::test_get_category_performance PASSED            [ 18%]
+tests/test_analytics.py::test_get_state_performance PASSED               [ 25%]
+tests/test_analytics.py::test_compute_rfm_segmentation PASSED            [ 31%]
+tests/test_analytics.py::test_compute_delivery_analytics PASSED          [ 37%]
+tests/test_data_loader.py::test_load_raw_tables PASSED                   [ 43%]
+tests/test_data_loader.py::test_build_master_dataset PASSED              [ 50%]
+tests/test_database.py::test_database_connection_and_basic_query PASSED  [ 56%]
+tests/test_database.py::test_curated_queries_syntax PASSED               [ 62%]
+tests/test_ml_service.py::test_build_ml_dataset PASSED                   [ 68%]
+tests/test_ml_service.py::test_load_trained_model PASSED                 [ 75%]
+tests/test_ml_service.py::test_predict_single_customer PASSED            [ 81%]
+tests/test_validation.py::test_validate_dataframe PASSED                 [ 87%]
+tests/test_validation.py::test_validate_date_range PASSED                [ 93%]
+tests/test_validation.py::test_validate_rfm_input PASSED                 [100%]
+
+============================= 16 passed in 12.80s =============================
+```
 
 ---
 
 ## ☁️ Deployment Instructions
 
-### Method A: Streamlit Community Cloud (Recommended)
-1. **Push your repository to GitHub**:
-   ```bash
-   git init
-   git add .
-   git commit -m "feat: complete Olist E-commerce Analytics portfolio app"
-   git branch -M main
-   git remote add origin https://github.com/<YOUR_GITHUB_USERNAME>/olist-ecommerce-analytics.git
-   git push -u origin main
-   ```
-2. Navigate to [share.streamlit.io](https://share.streamlit.io/) and log in with your GitHub account.
-3. Click **"New app"**.
-4. Select your repository: `<YOUR_GITHUB_USERNAME>/olist-ecommerce-analytics`.
-5. Set the Main file path to: `app.py`.
-6. Click **"Deploy"**. The app will automatically install `requirements.txt` and run.
+The application is deployed on **Streamlit Community Cloud**:
+- **Live URL:** [https://sheshendra-olist-analytics.streamlit.app/](https://sheshendra-olist-analytics.streamlit.app/)
+- **Repository:** `sheshendhra/olist-ecommerce-analytics`
+- **Branch:** `main`
+- **Main file path:** `app.py`
 
-### Method B: Render / Docker (Alternative)
-For hosting as a web service on Render, use the following start command:
-```bash
-streamlit run app.py --server.port 10000 --server.address 0.0.0.0
-```
+### Deployment Characteristics:
+- **No external database required:** Operates using the high-performance local Parquet cache and in-memory SQLite analytics engine.
+- **Zero credential risk:** No hardcoded secrets, database passwords, or environment variables needed for production operation.
+- **Multi-page routing:** Automatically detected from the `pages/` directory by Streamlit.
 
 ---
 
-## 👤 Project Branding & Attribution
+## 👤 Maintainer & Attribution
 
-- **Project Name:** Olist E-commerce Analytics — Sheshendra
-- **Author:** **Sheshendra**
-- **Original Project Attribution:** Derived and enhanced from the original open-source analysis by [Ashutosh-AIBOT](https://github.com/Ashutosh-AIBOT/olist-ecommerce-analytics) under the MIT License.
+- **Project Owner:** **Sheshendra**
+  - GitHub: [@sheshendhra](https://github.com/sheshendhra)
+  - Email: [sheshendra09@gmail.com](mailto:sheshendra09@gmail.com)
+  - Live Demo: [sheshendra-olist-analytics.streamlit.app](https://sheshendra-olist-analytics.streamlit.app/)
+- **Original Source Attribution:** Derived and enhanced from the open-source analysis by [Ashutosh-AIBOT](https://github.com/Ashutosh-AIBOT/olist-ecommerce-analytics) under the MIT License.
 - **Dataset Rights:** The dataset is public domain under CC BY-NC-SA 4.0, provided by Olist and André Sionek on Kaggle.
 
 ---
 
 ## 📜 License
+
 This project is open-source and licensed under the [MIT License](LICENSE).
