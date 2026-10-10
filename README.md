@@ -3,12 +3,15 @@
 > **End-to-End E-Commerce Data Analytics, Logistics Intelligence & Machine Learning Platform**  
 > Analyzing 98,666 real Brazilian marketplace orders, revenue performance, delivery punctuality, RFM customer segmentation, and churn risk.
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sheshendra-olist-analytics.streamlit.app/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.42%2B-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Plotly](https://img.shields.io/badge/Plotly-Interactive%20Charts-3F4F75?logo=plotly&logoColor=white)](https://plotly.com/)
 [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML%20Churn%20Model-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
 [![SQLite](https://img.shields.io/badge/SQL-Analytical%20Engine-003B57?logo=sqlite&logoColor=white)](https://sqlite.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+> 🚀 **Live Demo:** [https://sheshendra-olist-analytics.streamlit.app/](https://sheshendra-olist-analytics.streamlit.app/)
 
 ---
 
