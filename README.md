@@ -24,7 +24,7 @@
 
 - **Author & Maintainer:** **Sheshendra** ([GitHub: @sheshendhra](https://github.com/sheshendhra) | [Email](mailto:sheshendra09@gmail.com))
 - **Live Deployment:** [sheshendra-olist-analytics.streamlit.app](https://sheshendra-olist-analytics.streamlit.app/)
-- **Original Source Attribution:** Derived and enhanced from the open-source analytics project by [Ashutosh-AIBOT](https://github.com/Ashutosh-AIBOT/olist-ecommerce-analytics) under the MIT License.
+- **Original Source Attribution:** This project builds on an existing open-source analytics project and has been adapted and enhanced. See the repository's license and applicable third-party notices.
 - **Dataset:** [Olist Brazilian E-Commerce Dataset on Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
 ---
@@ -294,7 +294,7 @@ The application is deployed on **Streamlit Community Cloud**:
   - GitHub: [@sheshendhra](https://github.com/sheshendhra)
   - Email: [sheshendra09@gmail.com](mailto:sheshendra09@gmail.com)
   - Live Demo: [sheshendra-olist-analytics.streamlit.app](https://sheshendra-olist-analytics.streamlit.app/)
-- **Original Source Attribution:** Derived and enhanced from the open-source analysis by [Ashutosh-AIBOT](https://github.com/Ashutosh-AIBOT/olist-ecommerce-analytics) under the MIT License.
+- **Original Source Attribution:** This project builds on an existing open-source analytics project and has been adapted and enhanced. See the repository's license and applicable third-party notices.
 - **Dataset Rights:** The dataset is public domain under CC BY-NC-SA 4.0, provided by Olist and André Sionek on Kaggle.
 
 ---

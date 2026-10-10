@@ -6,9 +6,9 @@ PROJECT_TITLE = "Olist E-commerce Analytics — Sheshendra"
 PROJECT_SUBTITLE = "Brazilian E-Commerce Intelligence, Churn Risk & Executive Decision Platform"
 AUTHOR_NAME = "Sheshendra"
 ORIGINAL_ATTRIBUTION = (
-    "Derived and enhanced from the original open-source analysis by Ashutosh-AIBOT "
-    "(https://github.com/Ashutosh-AIBOT/olist-ecommerce-analytics) using the Olist "
-    "Brazilian E-Commerce public dataset on Kaggle."
+    "This project builds on an existing open-source analytics project and has been "
+    "adapted and enhanced. See the repository's license and applicable third-party notices. "
+    "Dataset: Olist Brazilian E-Commerce public dataset on Kaggle."
 )
 DATASET_SOURCE_URL = "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce"
 
