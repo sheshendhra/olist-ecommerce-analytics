@@ -1,0 +1,130 @@
+
+-------------- ANSWER FROM 30 - 40 -------------------------
+
+
+--Q31️⃣ Find all customers who have NEVER placed an order
+
+SELECT 
+     c.customer_id
+FROM olist_customers_dataset c
+LEFT JOIN  olist_orders_dataset o
+    ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL;
+
+
+
+--Q32️⃣ Find all orders that do NOT have any payment record.
+
+SELECT 
+    o.order_id
+FROM olist_orders_dataset o
+LEFT JOIN olist_order_payments_dataset p
+    ON o.order_id = p.order_id
+WHERE p.order_id IS NULL;
+
+--Q33️⃣ Find total number of orders per order_status using CASE WHEN.
+
+SELECT 
+     DISTINCT order_status,
+     COUNT(order_id) AS total_no_of_orders
+FROM olist_orders_dataset
+GROUP BY order_status;
+
+
+SELECT
+    SUM(CASE WHEN order_status = 'delivered' THEN 1 ELSE 0 END) AS delivered_orders,
+    SUM(CASE WHEN order_status = 'canceled' THEN 1 ELSE 0 END) AS canceled_orders,
+    COUNT(*) AS total_orders
+FROM olist_orders_dataset;
+
+
+--Q34️⃣ Find customer_city-wise delivered vs canceled orders.
+
+SELECT 
+     SUM(CASE WHEN o.order_status = 'delivered' THEN 1 ELSE 0 END) AS delivered_orders,
+     SUM(CASE WHEN o.order_status = 'canceled' THEN 1 ELSE 0 END) AS canceled_orders,
+	 c.customer_city
+FROM olist_customers_dataset c
+INNER JOIN olist_orders_dataset o
+    ON c.customer_id = o.customer_id
+GROUP BY customer_city;
+
+--Q35️⃣ Find average payment value per order.
+
+SELECT 
+     o.order_id,
+	 AVG(payment_value)
+FROM olist_orders_dataset o
+LEFT JOIN olist_order_payments_dataset p
+    ON o.order_id = p.order_id
+GROUP BY o.order_id;
+
+--Q36️⃣ Find top 3 customers who spent the most money.
+
+SELECT 
+     c.customer_id,
+	 SUM(p.payment_value) AS total_spent
+FROM olist_customers_dataset c
+JOIN olist_orders_dataset o
+     ON c.customer_id = o.customer_id
+JOIN olist_order_payments_dataset p
+     ON p.order_id = o.order_id
+GROUP BY c.customer_id
+ORDER BY total_spent DESC
+LIMIT 3 OFFSET 0;
+
+
+SELECT
+    o.customer_id,
+    SUM(p.payment_value) AS total_spent
+FROM olist_orders_dataset o
+JOIN olist_order_payments_dataset p
+    ON o.order_id = p.order_id
+GROUP BY o.customer_id
+ORDER BY total_spent DESC
+LIMIT 3;
+
+
+-- Q37️⃣ Find seller-wise average product price.
+
+
+SELECT
+     seller_id,
+	 AVG(price) AS avg_price
+FROM olist_order_items_dataset
+GROUP BY seller_id
+ORDER BY AVG(price)
+LIMIT 10;
+
+
+-- Q38️⃣ Find orders that have MORE than 1 product item.
+
+SELECT
+    order_id,
+    COUNT(product_id) AS product_count
+FROM olist_order_items_dataset
+GROUP BY order_id
+HAVING COUNT(product_id) > 1;
+
+
+-- Q39️⃣ Find customers who placed more than 1 order.
+
+SELECT 
+     customer_id,
+	 COUNT(order_id) As orderspc
+FROM olist_orders_dataset
+GROUP BY customer_id
+-- HAVING orderspc > 1 ;
+-- HAVING COUNT(order_id) > 1;
+;
+
+
+-- Q40️⃣ Rank sellers based on total revenue (use window function).
+
+SELECT 
+      seller_id,
+	  SUM(price) AS total_revenue,
+	  RANK() OVER (ORDER BY SUM(price) DESC) AS revenue_rank
+FROM olist_order_items_dataset
+GROUP BY seller_id;
+	 

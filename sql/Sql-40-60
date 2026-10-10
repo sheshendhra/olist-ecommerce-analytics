@@ -1,0 +1,244 @@
+
+---------------- Advance SQl Question 41-60 ------------------------
+
+
+-- Q41️⃣ Find the first order date for each customer.
+
+SELECT
+    customer_id,
+    MIN(order_purchase_timestamp) AS first_order_date
+FROM olist_orders_dataset
+GROUP BY customer_id;
+
+
+-- Q42️⃣ Find customers whose first order was ‘delivered’.
+
+WITH first_orders AS (
+    SELECT
+        customer_id,
+        MIN(order_purchase_timestamp) AS first_order_date
+    FROM olist_orders_dataset
+    GROUP BY customer_id
+)
+SELECT
+    o.customer_id
+FROM olist_orders_dataset o
+JOIN first_orders f
+    ON o.customer_id = f.customer_id
+   AND o.order_purchase_timestamp = f.first_order_date
+WHERE o.order_status = 'delivered';
+
+
+-- ✅ Q43️⃣ Find latest order per customer.
+
+SELECT
+    customer_id,
+    MAX(order_purchase_timestamp) AS latest_order
+FROM olist_orders_dataset
+GROUP BY customer_id;
+
+
+-- ✅ Q44️⃣ Top 3 customers per city by total spend.
+
+WITH city_spend AS (
+    SELECT
+        c.customer_city,
+        o.customer_id,
+        SUM(p.payment_value) AS total_spent
+    FROM olist_customers_dataset c
+    JOIN olist_orders_dataset o
+        ON c.customer_id = o.customer_id
+    JOIN olist_order_payments_dataset p
+        ON o.order_id = p.order_id
+    GROUP BY c.customer_city, o.customer_id
+)
+SELECT *
+FROM (
+    SELECT *,
+           RANK() OVER (PARTITION BY customer_city ORDER BY total_spent DESC) AS rnk
+    FROM city_spend
+) t
+WHERE rnk <= 3;
+
+
+
+-- Q45️⃣ Remove duplicate orders (keep latest one).
+
+SELECT *
+FROM (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY order_id
+               ORDER BY order_purchase_timestamp DESC
+           ) AS rn
+    FROM olist_orders_dataset
+) t
+WHERE rn = 1;
+
+
+-- Q46️⃣ Customers who ordered in multiple cities.
+
+SELECT
+    customer_id
+FROM olist_customers_dataset
+GROUP BY customer_id
+HAVING COUNT(DISTINCT customer_city) > 1;
+
+-- Q47️⃣ Running total of revenue by date.
+
+SELECT
+    o.order_purchase_timestamp::date AS order_date,
+    SUM(p.payment_value) AS daily_revenue,
+    SUM(SUM(p.payment_value)) OVER (
+        ORDER BY o.order_purchase_timestamp::date
+    ) AS running_total
+FROM olist_orders_dataset o
+JOIN olist_order_payments_dataset p
+    ON o.order_id = p.order_id
+GROUP BY order_date
+ORDER BY order_date;
+
+-- Q48️⃣ Sellers with revenue above average seller revenue.
+
+WITH seller_revenue AS (
+    SELECT
+        seller_id,
+        SUM(price) AS revenue
+    FROM olist_order_items_dataset
+    GROUP BY seller_id
+)
+SELECT *
+FROM seller_revenue
+WHERE revenue > (
+    SELECT AVG(revenue) FROM seller_revenue
+);
+
+
+-- Q49️⃣ Orders where payment > order average.
+
+SELECT
+    order_id,
+    payment_value
+FROM olist_order_payments_dataset
+WHERE payment_value > (
+    SELECT AVG(payment_value)
+    FROM olist_order_payments_dataset
+);
+
+
+-- Q50️⃣ Customers who ordered in consecutive months.
+
+WITH monthly_orders AS (
+    SELECT
+        customer_id,
+        DATE_TRUNC('month', order_purchase_timestamp) AS order_month
+    FROM olist_orders_dataset
+    GROUP BY customer_id, order_month
+)
+SELECT DISTINCT m1.customer_id
+FROM monthly_orders m1
+JOIN monthly_orders m2
+    ON m1.customer_id = m2.customer_id
+   AND m2.order_month = m1.order_month + INTERVAL '1 month';
+
+
+-- Q51️⃣ ROW_NUMBER vs RANK vs DENSE_RANK.
+
+SELECT
+    seller_id,
+    SUM(price) AS revenue,
+    ROW_NUMBER() OVER (ORDER BY SUM(price) DESC) AS row_num,
+    RANK() OVER (ORDER BY SUM(price) DESC) AS rank,
+    DENSE_RANK() OVER (ORDER BY SUM(price) DESC) AS dense_rank
+FROM olist_order_items_dataset
+GROUP BY seller_id;
+
+
+-- Q52️⃣ 2nd highest payment (NO LIMIT).
+
+SELECT MAX(payment_value)
+FROM olist_order_payments_dataset
+WHERE payment_value < (
+    SELECT MAX(payment_value)
+    FROM olist_order_payments_dataset
+);
+
+
+-- Q53️⃣ Use EXISTS (better than JOIN).
+
+SELECT *
+FROM olist_customers_dataset c
+WHERE EXISTS (
+    SELECT 1
+    FROM olist_orders_dataset o
+    WHERE o.customer_id = c.customer_id
+);
+
+--Q54️⃣ Cities with no delivered orders.
+
+SELECT
+    customer_city
+FROM olist_customers_dataset c
+LEFT JOIN olist_orders_dataset o
+    ON c.customer_id = o.customer_id
+GROUP BY customer_city
+HAVING SUM(CASE WHEN o.order_status = 'delivered' THEN 1 ELSE 0 END= 0;
+
+-- Q55️⃣ Percentage of delivered orders per city.
+
+SELECT
+    c.customer_city,
+    100.0 * SUM(CASE WHEN o.order_status = 'delivered' THEN 1 ELSE 0 END)
+    / COUNT(o.order_id) AS delivered_percentage
+FROM olist_orders_dataset o
+JOIN olist_customers_dataset c
+    ON o.customer_id = c.customer_id
+GROUP BY c.customer_city;
+
+-- Q56️⃣ Orders with delayed delivery.
+
+SELECT
+    order_id
+FROM olist_orders_dataset
+WHERE order_delivered_customer_date > order_estimated_delivery_date;
+
+-- Q57️⃣ Seller contribution % to total revenue.
+
+WITH seller_revenue AS (
+    SELECT
+        seller_id,
+        SUM(price) AS revenue
+    FROM olist_order_items_dataset
+    GROUP BY seller_id
+),
+total AS (
+    SELECT SUM(revenue) AS total_revenue FROM seller_revenue
+)
+SELECT
+    s.seller_id,
+    100.0 * s.revenue / t.total_revenue AS contribution_pct
+FROM seller_revenue s, total t;
+
+
+-- Q58️⃣ Customers who never canceled an order.
+
+SELECT
+    customer_id
+FROM olist_orders_dataset
+GROUP BY customer_id
+HAVING SUM(CASE WHEN order_status = 'canceled' THEN 1 ELSE 0 END) = 0;
+
+-- Q60️⃣ Customer Lifetime Value (CLV) using CTE.
+
+WITH clv AS (
+    SELECT
+        o.customer_id,
+        SUM(p.payment_value) AS lifetime_value
+    FROM olist_orders_dataset o
+    JOIN olist_order_payments_dataset p
+        ON o.order_id = p.order_id
+    GROUP BY o.customer_id
+)
+SELECT *
+FROM clv
+ORDER BY lifetime_value DESC;

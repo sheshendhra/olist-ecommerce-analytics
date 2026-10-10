@@ -1,0 +1,199 @@
+CREATE DATABASE olist;
+
+
+DROP TABLE IF EXISTS olist_customers_dataset CASCADE;
+DROP TABLE IF EXISTS olist_orders_dataset CASCADE;
+DROP TABLE IF EXISTS olist_order_items_dataset CASCADE;
+DROP TABLE IF EXISTS olist_order_payments_dataset CASCADE;
+DROP TABLE IF EXISTS olist_order_reviews_dataset CASCADE;
+DROP TABLE IF EXISTS olist_products_dataset CASCADE;
+DROP TABLE IF EXISTS olist_sellers_dataset CASCADE;
+DROP TABLE IF EXISTS olist_geolocation_dataset CASCADE;
+DROP TABLE IF EXISTS product_category_name_translation CASCADE;
+
+
+-- 1️⃣ Customers
+CREATE TABLE olist_customers_dataset (
+    customer_id VARCHAR(50) PRIMARY KEY,
+    customer_unique_id VARCHAR(50),
+    customer_zip_code_prefix INT,
+    customer_city VARCHAR(100),
+    customer_state VARCHAR(50)
+);
+
+-- 2️⃣ Orders
+CREATE TABLE olist_orders_dataset (
+    order_id VARCHAR(50) PRIMARY KEY,
+    customer_id VARCHAR(50),
+    order_status VARCHAR(50),
+    order_purchase_timestamp TIMESTAMP,
+    order_approved_at TIMESTAMP,
+    order_delivered_carrier_date TIMESTAMP,
+    order_delivered_customer_date TIMESTAMP,
+    order_estimated_delivery_date TIMESTAMP
+);
+
+-- 3️⃣ Order Items
+CREATE TABLE olist_order_items_dataset (
+    order_id VARCHAR(50),
+    order_item_id INT,
+    product_id VARCHAR(50),
+    seller_id VARCHAR(50),
+    shipping_limit_date TIMESTAMP,
+    price NUMERIC(10,2),
+    freight_value NUMERIC(10,2)
+);
+
+-- 4️⃣ Order Payments
+CREATE TABLE olist_order_payments_dataset (
+    order_id VARCHAR(50),
+    payment_sequential INT,
+    payment_type VARCHAR(50),
+    payment_installments INT,
+    payment_value NUMERIC(10,2)
+);
+
+-- 5️⃣ Order Reviews
+CREATE TABLE olist_order_reviews_dataset (
+    review_id VARCHAR(50) PRIMARY KEY,
+    order_id VARCHAR(50),
+    review_score INT,
+    review_comment_title VARCHAR(255),
+    review_comment_message TEXT,
+    review_creation_date TIMESTAMP,
+    review_answer_timestamp TIMESTAMP
+);
+
+-- 6️⃣ Products
+CREATE TABLE olist_products_dataset (
+    product_id VARCHAR(50) PRIMARY KEY,
+    product_category_name VARCHAR(100),
+    product_name_lenght INT,
+    product_description_lenght INT,
+    product_photos_qty INT,
+    product_weight_g NUMERIC,
+    product_length_cm NUMERIC,
+    product_height_cm NUMERIC,
+    product_width_cm NUMERIC
+);
+
+-- 7️⃣ Sellers
+CREATE TABLE olist_sellers_dataset (
+    seller_id VARCHAR(50) PRIMARY KEY,
+    seller_zip_code_prefix INT,
+    seller_city VARCHAR(100),
+    seller_state VARCHAR(50)
+);
+
+-- 8️⃣ Geolocation
+CREATE TABLE olist_geolocation_dataset (
+    geolocation_zip_code_prefix INT,
+    geolocation_lat NUMERIC,
+    geolocation_lng NUMERIC,
+    geolocation_city VARCHAR(100),
+    geolocation_state VARCHAR(50)
+);
+
+-- 9️⃣ Product Category Translation
+CREATE TABLE product_category_name_translation (
+    product_category_name VARCHAR(100),
+    product_category_name_english VARCHAR(100)
+);
+
+
+-- Customers
+COPY olist_customers_dataset(customer_id, customer_unique_id, customer_zip_code_prefix, customer_city, customer_state)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_customers_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+-- Orders
+COPY olist_orders_dataset(order_id, customer_id, order_status, order_purchase_timestamp, order_approved_at, order_delivered_carrier_date, order_delivered_customer_date, order_estimated_delivery_date)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_orders_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+-- Order Items
+COPY olist_order_items_dataset(order_id, order_item_id, product_id, seller_id, shipping_limit_date, price, freight_value)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_order_items_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+-- Order Payments
+COPY olist_order_payments_dataset(order_id, payment_sequential, payment_type, payment_installments, payment_value)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_order_payments_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+
+
+-- Drop temp table if exists
+DROP TABLE IF EXISTS tmp_order_reviews_dataset;
+
+-- Create temp table
+CREATE TABLE tmp_order_reviews_dataset (
+    review_id VARCHAR(50),
+    order_id VARCHAR(50),
+    review_score INT,
+    review_comment_title VARCHAR(255),
+    review_comment_message TEXT,
+    review_creation_date TIMESTAMP,
+    review_answer_timestamp TIMESTAMP
+);
+
+-- Load CSV into temp table
+COPY tmp_order_reviews_dataset
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_order_reviews_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+-- Insert unique rows into main table
+INSERT INTO olist_order_reviews_dataset(
+    review_id, order_id, review_score, review_comment_title, review_comment_message, review_creation_date, review_answer_timestamp
+)
+SELECT DISTINCT ON (review_id)
+    review_id, order_id, review_score, review_comment_title, review_comment_message, review_creation_date, review_answer_timestamp
+FROM tmp_order_reviews_dataset
+ORDER BY review_id, review_creation_date DESC;
+
+-- Drop temp table
+DROP TABLE tmp_order_reviews_dataset;
+
+
+-- Products
+COPY olist_products_dataset(product_id, product_category_name, product_name_lenght, product_description_lenght, product_photos_qty, product_weight_g, product_length_cm, product_height_cm, product_width_cm)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_products_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+-- Sellers
+COPY olist_sellers_dataset(seller_id, seller_zip_code_prefix, seller_city, seller_state)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_sellers_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+-- Geolocation
+COPY olist_geolocation_dataset(geolocation_zip_code_prefix, geolocation_lat, geolocation_lng, geolocation_city, geolocation_state)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/olist_geolocation_dataset.csv'
+DELIMITER ',' CSV HEADER;
+
+-- Product Category Translation
+COPY product_category_name_translation(product_category_name, product_category_name_english)
+FROM '/home/ashutosh/Desktop/Revenue & Customer Intelligence Platform/olistdataser/product_category_name_translation.csv'
+DELIMITER ',' CSV HEADER;
+
+
+-- List all tables
+SELECT table_name FROM information_schema.tables WHERE table_schema='public';
+
+-- Row counts
+SELECT 'olist_customers_dataset' AS table_name, COUNT(*) AS row_count FROM olist_customers_dataset
+UNION ALL
+SELECT 'olist_orders_dataset', COUNT(*) FROM olist_orders_dataset
+UNION ALL
+SELECT 'olist_order_items_dataset', COUNT(*) FROM olist_order_items_dataset
+UNION ALL
+SELECT 'olist_order_payments_dataset', COUNT(*) FROM olist_order_payments_dataset
+UNION ALL
+SELECT 'olist_order_reviews_dataset', COUNT(*) FROM olist_order_reviews_dataset
+UNION ALL
+SELECT 'olist_products_dataset', COUNT(*) FROM olist_products_dataset
+UNION ALL
+SELECT 'olist_sellers_dataset', COUNT(*) FROM olist_sellers_dataset
+UNION ALL
+SELECT 'olist_geolocation_dataset', COUNT(*) FROM olist_geolocation_dataset
+UNION ALL
+SELECT 'product_category_name_translation', COUNT(*) FROM product_category_name_translation;

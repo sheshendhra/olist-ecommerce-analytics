@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.streamlit/secrets.toml
+
+# Operating System
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large raw CSV datasets (downloadable via scripts/download_data.py)
+data/*.csv
+data/raw/
+data/processed/
+
+# Keep analytical parquet cache and deliverables
+!data/olist_master.parquet
+!Olist_Ecommerce_Analytics.xlsx
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node/Vite (obsolete)
+node_modules/
+dist/

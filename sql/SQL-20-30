@@ -1,0 +1,126 @@
+
+
+--------------- Answer 21- 30 -----------------------
+
+-- Q21 List order_id and customer_city for all orders
+
+
+-- SELECT 
+--     o.order_id,
+--     c.customer_city
+-- FROM olist_orders_dataset o
+-- JOIN olist_customers_dataset c
+--     ON o.customer_id = c.customer_id;
+
+
+
+-- Q2️⃣2️⃣ Count total orders per customer_city.
+
+-- SELECT COUNT(o.order_id) As total_orders,
+--        c.customer_city
+-- FROM olist_orders_dataset o
+-- JOIN olist_customers_dataset c
+--    ON o.customer_id = c.customer_id
+-- GROUP BY c.customer_city
+-- ORDER BY total_orders DESC;
+
+
+-- Q2️⃣3️⃣ Find total revenue per customer_city
+
+-- SELECT 
+--     c.customer_city,
+--     SUM(p.payment_value) AS total_revenue
+-- FROM olist_orders_dataset o
+-- INNER JOIN olist_customers_dataset c
+-- ON o.customer_id = c.customer_id
+-- INNER JOIN olist_order_payments_dataset p
+-- ON o.order_id = p.order_id
+-- GROUP BY c.customer_city
+-- ORDER BY total_revenue DESC
+-- LIMIT 5;
+
+
+
+-- Q2️⃣4️⃣ List order_id, product_id, and price for each order item.
+
+-- SELECT 
+--      order_id,
+-- 	 product_id, 
+-- 	 price
+-- FROM olist_order_items_dataset
+
+
+-- Q2️⃣5️⃣ Find total revenue per product_id.
+
+
+-- SELECT 
+--     oi.product_id,
+--     SUM(p.payment_value) AS total_revenue
+-- FROM olist_order_items_dataset oi
+-- INNER JOIN public.olist_order_payments_dataset p
+-- ON oi.order_id = p.order_id
+-- GROUP BY oi.product_id
+-- ORDER BY total_revenue DESC;
+
+
+-- SELECT 
+--     product_id,
+--     SUM(price) AS total_revenue
+-- FROM olist_order_items_dataset
+-- GROUP BY product_id;
+
+-- Q2️⃣6️⃣ Find top 10 products by total sales value.
+
+-- SELECT 
+--     product_id,
+--     SUM(price) AS total_sales
+-- FROM olist_order_items_dataset 
+-- GROUP BY product_id
+-- ORDER BY total_sales DESC
+-- LIMIT 10;
+
+-- Q2️⃣7️⃣ Count number of products sold by each seller.
+
+-- SELECT
+--      seller_id,
+--      COUNT(product_id) AS total_product
+-- FROM public.olist_order_items_dataset 
+-- GROUP BY seller_id
+-- ORDER BY total_product DESC
+       
+-- Q2️⃣8️⃣ Find seller-wise total revenue.
+
+-- SELECT 
+--      s.seller_id,
+-- 	 SUM(p.payment_value) AS total_revenue
+-- FROM olist_order_items_dataset s
+-- INNER JOIN olist_order_payments_dataset p
+--      ON s.order_id = p.order_id
+-- GROUP BY seller_id
+-- ORDER BY total_revenue DESC
+	
+-- Q2️⃣9️⃣ Find orders that have no payment records.
+
+
+-- SELECT 
+--      order_id,
+-- 	 payment_value
+-- FROM olist_order_payments_dataset
+-- GROUP BY order_id
+-- HAVING  payment_value > 0 
+
+-- SELECT
+--        order_id,
+-- 	   payment_value
+-- FROM olist_order_payments_dataset
+-- WHERE payment_value IS NULL;
+
+
+-- Q3️⃣0️⃣ Find customers who placed orders but never made payment.
+
+-- SELECT DISTINCT
+--     customer_id
+-- FROM  olist_order_payments_dataset c
+-- INNER JOIN olist_orders_dataset o
+-- ON c.order_id  = o.order_id 
+-- WHERE payment_value IS NULL;
